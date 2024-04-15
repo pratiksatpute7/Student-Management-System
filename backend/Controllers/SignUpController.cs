@@ -3,19 +3,36 @@ using System.Collections.Generic;
 using System.Data.SqlClient;
 using System.Linq;
 using System.Threading.Tasks;
+using backend.Helpers;
+using backend.Models;
 using Microsoft.AspNetCore.Mvc;
+using System.Data.SqlClient;
 
 namespace backend.Controllers
 {
-    [Route("api/signup")]
+    [Route("signup")]
     [ApiController]
-    public class SignUpController : ControllerBase
+    public class SignupController : ControllerBase
     {
-        [HttpGet]
-        public int Getname()
+        private SignupHelper signupHelper = new SignupHelper();
+        
+        [HttpPost("admin")]
+        public async Task<IActionResult> Signup([FromBody] UserSignUpModel userSignupData)
         {
-            int temp = 10;
-            return temp;
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    await signupHelper.SignupAdminUser(userSignupData);
+                    return Ok($"User {userSignupData.userName} signed up successfully.");
+                }
+                catch (System.Exception)
+                {
+                    throw;
+                }
+            }
+
+            return BadRequest("Invalid signup data.");
         }
     }
 }
