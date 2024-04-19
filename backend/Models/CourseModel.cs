@@ -5,13 +5,12 @@ using System.Threading.Tasks;
 
 namespace backend.Models
 {
-    public class StudentModel : UserModel
+    public class CourseModel : CreateCouresModel
     {
-        public int grade
+        public int courseId
         {
             get;
             set;
         }
-
     }
 }

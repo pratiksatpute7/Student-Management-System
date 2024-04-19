@@ -11,13 +11,9 @@ namespace backend.Controllers
 {
     [Route("login")]
     [ApiController]
-    public class LoginController : ControllerBase
+    public class LoginController(IConfiguration configuration) : ControllerBase
     {
-        private readonly IConfiguration _configuration;
-        public LoginController(IConfiguration configuration)
-        {
-            _configuration = configuration;
-        }
+        private readonly IConfiguration _configuration = configuration;
 
         [HttpPost("admin")]
         public async Task<IActionResult> AdminLogin([FromBody] UserLoginModel user)

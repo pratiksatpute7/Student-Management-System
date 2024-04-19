@@ -14,6 +14,7 @@ CREATE TABLE Students (
     contact VARCHAR(20),
     address VARCHAR(255),
     userPassword VARCHAR(50) NOT NULL,
+    grade int,
     userType int
 );
 GO
@@ -46,10 +47,10 @@ CREATE TABLE Admins (
 );
 GO
 
-INSERT INTO Students (userName, firstName, lastName, emailID, contact, address, userPassword, userType) VALUES
-('john_doe', 'John', 'Doe', 'john.doe@example.com', '1234567890', '1234 Elm Street', 'pass123', 2),
-('jane_smith', 'Jane', 'Smith', 'jane.smith@example.com', '0987654321', '5678 Oak Street', 'pass456', 2),
-('alice_jones', 'Alice', 'Jones', 'alice.jones@example.com', '1122334455', '91011 Pine Avenue', 'pass789', 2);
+INSERT INTO Students (userName, firstName, lastName, emailID, contact, address, userPassword, grade, userType) VALUES
+('john_doe', 'John', 'Doe', 'john.doe@example.com', '1234567890', '1234 Elm Street', 'pass123', 1, 2),
+('jane_smith', 'Jane', 'Smith', 'jane.smith@example.com', '0987654321', '5678 Oak Street', 'pass456', 5, 2),
+('alice_jones', 'Alice', 'Jones', 'alice.jones@example.com', '1122334455', '91011 Pine Avenue', 'pass789', 3, 2);
 GO
 
 INSERT INTO Teachers (userName, firstName, lastName, emailID, contact, department, officeLocation, userPassword, userType) VALUES
