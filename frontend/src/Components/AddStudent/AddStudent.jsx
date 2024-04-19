@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-
+import './AddStudent.css';
 const AddStudentForm = () => {
     const [formData, setFormData] = useState({
         firstName: '',

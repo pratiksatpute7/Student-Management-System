@@ -1,11 +1,4 @@
-/* #EBEFFF */
-
-
-body {
-    font-family: Arial, sans-serif;
-    margin: 0;
-    padding: 0;
-}
+/* CreateCourseForm.css */
 
 .container {
     max-width: 600px;
@@ -13,7 +6,7 @@ body {
     padding: 20px;
     border: 1px solid #ccc;
     border-radius: 5px;
-    background-color: #AFB3FF;
+    background-color: #f9f9f9;
 }
 
 h2 {
@@ -30,8 +23,9 @@ label {
 }
 
 input[type="text"],
-input[type="email"],
-input[type="number"] {
+textarea,
+input[type="number"],
+select {
     padding: 10px;
     margin-bottom: 10px;
     border: 1px solid #ccc;
@@ -41,7 +35,7 @@ input[type="number"] {
 
 button {
     padding: 10px 20px;
-    background-color: #656ED3;
+    background-color: #007bff;
     color: #fff;
     border: none;
     border-radius: 5px;
@@ -50,9 +44,9 @@ button {
 }
 
 button:hover {
-    background-color: #656ed3c8;
+    background-color: #0056b3;
 }
 
 button:active {
-    background-color: #656ED3;
+    background-color: #0056b3;
 }

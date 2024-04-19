@@ -3,7 +3,7 @@ import './loginsignup.css'
 import loginbut from '../Assets/loginbutton.png'
 import signupbut from '../Assets/signupbutton.png'
 import rect from '../Assets/Rectangle1.png'
-const LoginSignup = () => {
+const loginsignup = () => {
     return(
         <div className="container">
             <div className="header">
@@ -27,4 +27,4 @@ const LoginSignup = () => {
     )
 }
 
-export default LoginSignup
+export default loginsignup
