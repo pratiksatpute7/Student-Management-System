@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using backend.Helpers;
 using backend.Models;
 using Microsoft.AspNetCore.Mvc;
 
@@ -52,7 +53,7 @@ namespace backend.Controllers
         {
             if (ModelState.IsValid)
             {
-
+                UserHelper userhelper = new StudentHelper();
                 return Ok($"User signed up successfully.");
             }
 

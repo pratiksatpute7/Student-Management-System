@@ -6,54 +6,44 @@ using backend.Enums;
 
 namespace backend.Models
 {
-    public class UserModel
+    public class CreateCouresModel
     {
-
-        public string? userName
-        {
-            get;
-            set;
-        }
-        public string? firstName
-        {
-            get;
-            set;
-        }
-        public string? lastName
+        public  string? courseName
         {
             get;
             set;
         }
 
-        public int? userId
+        public  string? courseDescription
         {
             get;
             set;
         }
 
-        public string? emailId
+        public  string? courseCode
         {
             get;
             set;
         }
 
-        public UserType userType
+        public int maxCapacity
         {
             get;
             set;
         }
 
-        public string password
+        public  int credits
         {
             get;
             set;
         }
 
-        public string? contact
+        public  Department departmentId
         {
             get;
             set;
         }
 
     }
+
 }

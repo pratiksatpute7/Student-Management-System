@@ -6,11 +6,11 @@ using backend.Models;
 
 namespace backend.Helpers
 {
-    public class UserHelper
+    public class StudentHelper : UserHelper
     {
-        public virtual async Task<UserModel> GetUserDetails()
+        public override async Task<UserModel> GetUserDetails()
         {
-            return new UserModel();
+            return new StudentModel();
         }
     }
 }

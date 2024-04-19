@@ -11,7 +11,8 @@ BEGIN
         userPassword as password,
         emailID,
         contact,
-        userType
+        userType,
+        grade,
     FROM 
         Students
     WHERE 

@@ -185,6 +185,7 @@ namespace backend.Helpers
                         student.userType = (UserType)reader["userType"];
                         student.password = reader["password"].ToString();
                         student.contact = reader["contact"].ToString();
+                        student.grade =  Convert.ToInt32(reader["grade"]);
                     }
                 }
                 return student;
