@@ -21,3 +21,8 @@ node_modules
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
+/backend/bin
+/backend/obj
+/backend/obj
+/backend/obj/Debug
+/backend/obj
