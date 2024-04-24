@@ -34,98 +34,68 @@ namespace backend.Helpers
 
         private async Task CreateClassInDatabase(CreateClassModel classData)
         {
-            using (SqlConnection connection = new SqlConnection(connectionString))
-            {
-                await connection.OpenAsync();
-                SqlCommand command = new("CreateClass", connection)
-                {
-                    CommandType = System.Data.CommandType.StoredProcedure
-                };
-                command.CommandType = System.Data.CommandType.StoredProcedure;
-                command.Parameters.AddWithValue("@className", classData.className);
-                command.Parameters.AddWithValue("@classTerm", classData.classTerm);
-                command.Parameters.AddWithValue("@teacherId", classData.teacherId);
-                command.Parameters.AddWithValue("@location", classData.location);
-                command.Parameters.AddWithValue("@classDescription", classData.classDescription);
-                command.Parameters.AddWithValue("@startTime", classData.startTime);
-                command.Parameters.AddWithValue("@endTime", classData.endTime);
+            (SqlCommand command, SqlConnection connection) = await DBConnection.CreateConnectionReturnCommand("CreateClass");
 
-                await command.ExecuteNonQueryAsync();
-                await connection.CloseAsync();
-            }
-
+            command.Parameters.AddWithValue("@className", classData.className);
+            command.Parameters.AddWithValue("@classTerm", classData.classTerm);
+            command.Parameters.AddWithValue("@teacherId", classData.teacherId);
+            command.Parameters.AddWithValue("@location", classData.location);
+            command.Parameters.AddWithValue("@classDescription", classData.classDescription);
+            command.Parameters.AddWithValue("@startTime", classData.startTime);
+            command.Parameters.AddWithValue("@endTime", classData.endTime);
+            await command.ExecuteNonQueryAsync();
+            await connection.CloseAsync();
         }
 
         private async Task UpdateClassInDatabase(ClassModel classData)
         {
-            using (SqlConnection connection = new SqlConnection(connectionString))
-            {
-                await connection.OpenAsync();
-                SqlCommand command = new("UpdateClass", connection)
-                {
-                    CommandType = System.Data.CommandType.StoredProcedure
-                };
-                command.CommandType = System.Data.CommandType.StoredProcedure;
-                command.Parameters.AddWithValue("@classId", classData.classId);
-                command.Parameters.AddWithValue("@className", classData.className);
-                command.Parameters.AddWithValue("@classTerm", classData.classTerm);
-                command.Parameters.AddWithValue("@teacherId", classData.teacherId);
-                command.Parameters.AddWithValue("@location", classData.location);
-                command.Parameters.AddWithValue("@classDescription", classData.classDescription);
-                command.Parameters.AddWithValue("@startTime", classData.startTime);
-                command.Parameters.AddWithValue("@endTime", classData.endTime);
+            (SqlCommand command, SqlConnection connection) = await DBConnection.CreateConnectionReturnCommand("UpdateClass");
 
-                await command.ExecuteNonQueryAsync();
-                await connection.CloseAsync();
-            }
+            command.Parameters.AddWithValue("@classId", classData.classId);
+            command.Parameters.AddWithValue("@className", classData.className);
+            command.Parameters.AddWithValue("@classTerm", classData.classTerm);
+            command.Parameters.AddWithValue("@teacherId", classData.teacherId);
+            command.Parameters.AddWithValue("@location", classData.location);
+            command.Parameters.AddWithValue("@classDescription", classData.classDescription);
+            command.Parameters.AddWithValue("@startTime", classData.startTime);
+            command.Parameters.AddWithValue("@endTime", classData.endTime);
+
+            await command.ExecuteNonQueryAsync();
+            await connection.CloseAsync();
         }
 
         private async Task<ClassModel> GetClassDetailFromDatabase (int classId)
         {
             ClassModel classData = new ClassModel();
-            using (SqlConnection connection = new SqlConnection(connectionString))
-            {
-                await connection.OpenAsync();
-                SqlCommand command = new("GetClassDetails", connection)
-                {
-                    CommandType = System.Data.CommandType.StoredProcedure
-                };
-                command.Parameters.AddWithValue("@classId", classId);
+            (SqlCommand command, SqlConnection connection) = await DBConnection.CreateConnectionReturnCommand("GetClassDetails");
+            command.Parameters.AddWithValue("@classId", classId);
                 
-                using (SqlDataReader reader = await command.ExecuteReaderAsync())
+            using (SqlDataReader reader = await command.ExecuteReaderAsync())
+            {
+                while (reader.Read())
                 {
-                    while (reader.Read())
-                    {
-                        classData.className = reader["className"].ToString();
-                        classData.classId = Convert.ToInt32(reader["classId"]);
-                        classData.classDescription = reader["classDescription"].ToString();
-                        classData.classTerm = reader["classTerm"].ToString();
-                        classData.teacherId = Convert.ToInt32(reader["teacherId"]);
-                        classData.startTime = Convert.ToDateTime(reader["startTime"]);
-                        classData.endTime = Convert.ToDateTime(reader["endTime"]);
-                        classData.location = reader["location"].ToString();
-                    }
+                    classData.className = reader["className"].ToString();
+                    classData.classId = Convert.ToInt32(reader["classId"]);
+                    classData.classDescription = reader["classDescription"].ToString();
+                    classData.classTerm = reader["classTerm"].ToString();
+                    classData.teacherId = Convert.ToInt32(reader["teacherId"]);
+                    classData.startTime = Convert.ToDateTime(reader["startTime"]);
+                    classData.endTime = Convert.ToDateTime(reader["endTime"]);
+                    classData.location = reader["location"].ToString();
                 }
             }
-
+            await connection.CloseAsync();
             return classData;
         }
 
         private async Task DeleteClassInDatabase(int classId)
         {
-            using (SqlConnection connection = new SqlConnection(connectionString))
-            {
-                await connection.OpenAsync();
-                SqlCommand command = new("DeleteClass", connection)
-                {
-                    CommandType = System.Data.CommandType.StoredProcedure
-                };
-                command.CommandType = System.Data.CommandType.StoredProcedure;
-                command.Parameters.AddWithValue("@classId", classId);
+            (SqlCommand command, SqlConnection connection) = await DBConnection.CreateConnectionReturnCommand("DeleteClass");
+            
+            command.Parameters.AddWithValue("@classId", classId);
 
-                await command.ExecuteNonQueryAsync();
-                await connection.CloseAsync();
-            }
+            await command.ExecuteNonQueryAsync();
+            await connection.CloseAsync();
         }
     }
 }

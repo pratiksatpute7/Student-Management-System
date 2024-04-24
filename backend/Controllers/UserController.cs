@@ -38,37 +38,45 @@ namespace backend.Controllers
         }
 
         [HttpGet("teacher-details")]
-        public async Task<IActionResult> GetTeacherDetails([FromQuery] int userId)
+        public async Task<UserModel> GetTeacherDetails([FromQuery] int userId)
         {
             if (ModelState.IsValid)
             {
-
-                return Ok($"User signed up successfully.");
+                UserHelper userhelper = new TeacherHelper();
+                return await userhelper.GetUserDetails(userId);
+            }
+            else
+            {
+                throw new Exception("Bad request");
             }
 
-            return BadRequest("Invalid signup data.");
         }
         [HttpGet("student-details")]
-        public async Task<IActionResult> GetStudentDetails([FromQuery] int userId)
+        public async Task<UserModel> GetStudentDetails([FromQuery] int userId)
         {
             if (ModelState.IsValid)
             {
                 UserHelper userhelper = new StudentHelper();
-                return Ok($"User signed up successfully.");
+                return await userhelper.GetUserDetails(userId);
             }
-
-            return BadRequest("Invalid signup data.");
+            else
+            {
+                throw new Exception("Bad request");
+            }
         }
         [HttpGet("admin-details")]
-        public async Task<IActionResult> GetAdminDetails([FromQuery] int userId)
+        public async Task<UserModel> GetAdminDetails([FromQuery] int userId)
         {
             if (ModelState.IsValid)
             {
-
-                return Ok($"User signed up successfully.");
+                UserHelper userhelper = new AdminHelper();
+                return await userhelper.GetUserDetails(userId);
+            }
+            else
+            {
+                throw new Exception("Bad request");
             }
 
-            return BadRequest("Invalid signup data.");
         }
         
     }

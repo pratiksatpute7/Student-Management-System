@@ -17,7 +17,7 @@ namespace backend.Controllers
         [HttpPost("create")]
         public async Task<IActionResult> CreateCourse ([FromBody] CreateCouresModel course)
         {
-            CourseHelper courseHelper = new CourseHelper(_configuration);
+            CourseHelper courseHelper = new CourseHelper();
             if (ModelState.IsValid)
             {
                 try
@@ -40,7 +40,7 @@ namespace backend.Controllers
         [HttpPost("update")]
         public async Task<IActionResult> UpdateCourse([FromBody] CourseModel course)
         {
-            CourseHelper courseHelper = new CourseHelper(_configuration);
+            CourseHelper courseHelper = new CourseHelper();
             if (ModelState.IsValid)
             {
                 try
@@ -60,7 +60,7 @@ namespace backend.Controllers
         [HttpGet("details")]
         public async Task<CourseModel> GetCourse([FromQuery] int courseId)
         {
-            CourseHelper courseHelper = new CourseHelper(_configuration);
+            CourseHelper courseHelper = new CourseHelper();
             if (ModelState.IsValid)
             {
                 try
@@ -84,7 +84,7 @@ namespace backend.Controllers
         [HttpDelete("delete")]
         public async Task<IActionResult> DeleteCourse([FromQuery] int courseId)
         {
-            CourseHelper courseHelper = new CourseHelper(_configuration);
+            CourseHelper courseHelper = new CourseHelper();
             if (ModelState.IsValid)
             {
                 try
