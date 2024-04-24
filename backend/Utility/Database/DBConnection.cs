@@ -11,15 +11,15 @@ namespace backend.Utility.Database
         private static readonly string connectionString = "Server=localhost, 1433\\Catalog=StudentManagementSystem;Database=StudentManagementSystem;User=SA; Password=Password123;";  
         public static string getConnectionString { get => connectionString; }  
 
-        public static async Task<SqlDataReader> ExecuteSPWithParameters(SqlCommand command)
+        public static async Task<(SqlCommand, SqlConnection)> CreateConnectionReturnCommand(string spName)
         {
-            using (SqlConnection con = new(connectionString))
+            SqlConnection connection = new SqlConnection(connectionString);
+            await connection.OpenAsync();
+            SqlCommand command = new(spName, connection)
             {
-                await con.OpenAsync();
-                SqlDataReader reader = await command.ExecuteReaderAsync();
-                return reader;
-   
-            }
+                CommandType = System.Data.CommandType.StoredProcedure
+            };
+            return (command, connection);
         }
     }
 }

@@ -4,15 +4,16 @@ using System.Data.SqlClient;
 using System.Linq;
 using System.Threading.Tasks;
 using backend.Enums;
+using backend.Interface;
 using backend.Models;
 using backend.Utility.Database;
 
 namespace backend.Helpers
 {
-    public class CourseHelper(IConfiguration configuration)
+    public class CourseHelper() : ICourseHelper
+
     {
         private readonly string connectionString = DBConnection.getConnectionString;
-        private readonly IConfiguration? _configuration = configuration;
 
         public async Task CreateCourse(CreateCouresModel course)
         {
@@ -37,94 +38,65 @@ namespace backend.Helpers
         private async Task<CourseModel> GetCourseDetailsFromDatabase(int courseId)
         {
             CourseModel course = new CourseModel();
-            using (SqlConnection connection = new SqlConnection(connectionString))
+            (SqlCommand command, SqlConnection connection) = await DBConnection.CreateConnectionReturnCommand("GetCourseDetails");
+        
+            command.Parameters.AddWithValue("@courseId", courseId);
+            
+            using (SqlDataReader reader = await command.ExecuteReaderAsync())
             {
-                await connection.OpenAsync();
-                SqlCommand command = new("GetCourseDetails", connection)
+                while (reader.Read())
                 {
-                    CommandType = System.Data.CommandType.StoredProcedure
-                };
-                command.Parameters.AddWithValue("@courseId", courseId);
-                
-                using (SqlDataReader reader = await command.ExecuteReaderAsync())
-                {
-                    while (reader.Read())
-                    {
-                        course.courseName = reader["courseName"].ToString();
-                        course.courseId = Convert.ToInt32(reader["courseId"]);
-                        course.courseDescription = reader["courseDescription"].ToString();
-                        course.courseCode = reader["courseCode"].ToString();
-                        course.maxCapacity = Convert.ToInt32(reader["maxCapacity"]);
-                        course.credits = Convert.ToInt32(reader["credits"]);
-                        course.departmentId = (Department)reader["departmentId"];
-                    }
+                    course.courseName = reader["courseName"].ToString();
+                    course.courseId = Convert.ToInt32(reader["courseId"]);
+                    course.courseDescription = reader["courseDescription"].ToString();
+                    course.courseCode = reader["courseCode"].ToString();
+                    course.maxCapacity = Convert.ToInt32(reader["maxCapacity"]);
+                    course.credits = Convert.ToInt32(reader["credits"]);
+                    course.departmentId = (Department)reader["departmentId"];
                 }
             }
+            await connection.CloseAsync();
             return course;
         }
 
         private async Task InsertCourseInDatabase(CreateCouresModel course)
         {
-            using (SqlConnection connection = new SqlConnection(connectionString))
-            {
-                await connection.OpenAsync();
-                SqlCommand command = new("CreateCourse", connection)
-                {
-                    CommandType = System.Data.CommandType.StoredProcedure
-                };
-                command.CommandType = System.Data.CommandType.StoredProcedure;
-                command.Parameters.AddWithValue("@courseName", course.courseName);
-                command.Parameters.AddWithValue("@courseDescription", course.courseDescription);
-                command.Parameters.AddWithValue("@courseCode", course.courseCode);
-                command.Parameters.AddWithValue("@maxCapacity", course.maxCapacity);
-                command.Parameters.AddWithValue("@departmentId", course.departmentId);
-                command.Parameters.AddWithValue("@credits", course.credits);
+            (SqlCommand command, SqlConnection connection) = await DBConnection.CreateConnectionReturnCommand("CreateCourse");
+            
+            command.Parameters.AddWithValue("@courseName", course.courseName);
+            command.Parameters.AddWithValue("@courseDescription", course.courseDescription);
+            command.Parameters.AddWithValue("@courseCode", course.courseCode);
+            command.Parameters.AddWithValue("@maxCapacity", course.maxCapacity);
+            command.Parameters.AddWithValue("@departmentId", course.departmentId);
+            command.Parameters.AddWithValue("@credits", course.credits);
 
-                await command.ExecuteNonQueryAsync();
-                await connection.CloseAsync();
-            }
-
+            await command.ExecuteNonQueryAsync();
+            await connection.CloseAsync();
         }
+
         private async Task UpdateCourseInDatabase(CourseModel course)
         {
-            using (SqlConnection connection = new SqlConnection(connectionString))
-            {
-                await connection.OpenAsync();
-                SqlCommand command = new("UpdateCourse", connection)
-                {
-                    CommandType = System.Data.CommandType.StoredProcedure
-                };
+            (SqlCommand command, SqlConnection connection) = await DBConnection.CreateConnectionReturnCommand("UpdateCourse");
 
-                command.CommandType = System.Data.CommandType.StoredProcedure;
-                command.Parameters.AddWithValue("@courseId", course.courseId);
-                command.Parameters.AddWithValue("@courseName", course.courseName);
-                command.Parameters.AddWithValue("@courseDescription", course.courseDescription);
-                command.Parameters.AddWithValue("@courseCode", course.courseCode);
-                command.Parameters.AddWithValue("@maxCapacity", course.maxCapacity);
-                command.Parameters.AddWithValue("@departmentId", course.departmentId);
-                command.Parameters.AddWithValue("@credits", course.credits);
+            command.Parameters.AddWithValue("@courseId", course.courseId);
+            command.Parameters.AddWithValue("@courseName", course.courseName);
+            command.Parameters.AddWithValue("@courseDescription", course.courseDescription);
+            command.Parameters.AddWithValue("@courseCode", course.courseCode);
+            command.Parameters.AddWithValue("@maxCapacity", course.maxCapacity);
+            command.Parameters.AddWithValue("@departmentId", course.departmentId);
+            command.Parameters.AddWithValue("@credits", course.credits);
 
-                await command.ExecuteNonQueryAsync();
-                await connection.CloseAsync();
-            }
+            await command.ExecuteNonQueryAsync();
+            await connection.CloseAsync();
         }
 
         private async Task DeleteCourseInDatabase(int courseId)
         {
-            using (SqlConnection connection = new SqlConnection(connectionString))
-            {
-                await connection.OpenAsync();
-                SqlCommand command = new("DeleteCourse", connection)
-                {
-                    CommandType = System.Data.CommandType.StoredProcedure
-                };
+            (SqlCommand command, SqlConnection connection) = await DBConnection.CreateConnectionReturnCommand("DeleteCourse");
 
-                command.CommandType = System.Data.CommandType.StoredProcedure;
-                command.Parameters.AddWithValue("@courseId", courseId);
-
-                await command.ExecuteNonQueryAsync();
-                await connection.CloseAsync();
-            }
+            command.Parameters.AddWithValue("@courseId", courseId);
+            await command.ExecuteNonQueryAsync();
+            await connection.CloseAsync();
         }
     }
 }

@@ -20,23 +20,18 @@ namespace backend.Helpers
 
         private async Task InsetAdminInDatabase(UserSignUpModel userSignupData)
         {
-            using (SqlConnection connection = new SqlConnection(connectionString))
-            {
-                await connection.OpenAsync();
-                SqlCommand command = new("InsertAdminUser", connection)
-                {
-                    CommandType = System.Data.CommandType.StoredProcedure
-                };
-                command.Parameters.AddWithValue("@userName", userSignupData.userName);
-                command.Parameters.AddWithValue("@firstName", userSignupData.firstName);
-                command.Parameters.AddWithValue("@lastName", userSignupData.lastName);
-                command.Parameters.AddWithValue("@userPassword", userSignupData.password);
-                command.Parameters.AddWithValue("@emailID", userSignupData.emailId);
-                command.Parameters.AddWithValue("@contact", userSignupData.contact);
-                command.Parameters.AddWithValue("@userType", UserType.ADMIN);
+            (SqlCommand command, SqlConnection connection) = await DBConnection.CreateConnectionReturnCommand("InsertAdminUser");
+            
+            command.Parameters.AddWithValue("@userName", userSignupData.userName);
+            command.Parameters.AddWithValue("@firstName", userSignupData.firstName);
+            command.Parameters.AddWithValue("@lastName", userSignupData.lastName);
+            command.Parameters.AddWithValue("@userPassword", userSignupData.password);
+            command.Parameters.AddWithValue("@emailID", userSignupData.emailId);
+            command.Parameters.AddWithValue("@contact", userSignupData.contact);
+            command.Parameters.AddWithValue("@userType", UserType.ADMIN);
                 
-                await command.ExecuteNonQueryAsync();
-            }
+            await command.ExecuteNonQueryAsync();
+            await connection.CloseAsync();
         }
     }
 }

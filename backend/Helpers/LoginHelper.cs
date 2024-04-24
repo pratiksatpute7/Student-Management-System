@@ -18,7 +18,7 @@ namespace backend.Helpers
         {
             bool userExists = await CheckIfUserIsPresentAsync(user.userName, userType);
             bool isMatch = false;
-            AdminModel admin;
+            TeacherModel admin;
             TeacherModel teacher;
             StudentModel student;
             object userDetils = new();
@@ -101,95 +101,80 @@ namespace backend.Helpers
             return typedPassword.Equals(dbPassword);
         }
 
-        private async Task<AdminModel> GetAdminDetails(string emailID, string spName)
+        private async Task<TeacherModel> GetAdminDetails(string emailID, string spName)
         {
-            using (SqlConnection connection = new SqlConnection(connectionString))
+            (SqlCommand command, SqlConnection connection) = await DBConnection.CreateConnectionReturnCommand(spName);
+            TeacherModel admin = new TeacherModel();
+            
+            command.Parameters.AddWithValue("@Email", emailID);
+            
+            using (SqlDataReader reader = await command.ExecuteReaderAsync())
             {
-                AdminModel admin = new AdminModel();
-                await connection.OpenAsync();
-                SqlCommand command = new(spName, connection)
+                while (reader.Read())
                 {
-                    CommandType = System.Data.CommandType.StoredProcedure
-                };
-                command.Parameters.AddWithValue("@Email", emailID);
-                
-                using (SqlDataReader reader = await command.ExecuteReaderAsync())
-                {
-                    while (reader.Read())
-                    {
-                        admin.userName = reader["userName"].ToString();
-                        admin.firstName = reader["firstName"].ToString();
-                        admin.lastName = reader["lastName"].ToString();
-                        admin.userId = Convert.ToInt32(reader["userId"]);
-                        admin.emailId = reader["emailID"].ToString();
-                        admin.userType = (UserType)reader["userType"];
-                        admin.password = reader["password"].ToString();
-                        admin.contact = reader["contact"].ToString();
-                    }
+                    admin.userName = reader["userName"].ToString();
+                    admin.firstName = reader["firstName"].ToString();
+                    admin.lastName = reader["lastName"].ToString();
+                    admin.userId = Convert.ToInt32(reader["userId"]);
+                    admin.emailId = reader["emailID"].ToString();
+                    admin.userType = (UserType)reader["userType"];
+                    admin.password = reader["password"].ToString();
+                    admin.contact = reader["contact"].ToString();
                 }
-                return admin;
             }
+            await connection.CloseAsync();
+            return admin;
         }
 
         private async Task<TeacherModel> GetTeacherDetails(string emailID, string spName)
         {
-            using (SqlConnection connection = new SqlConnection(connectionString))
-            {
-                TeacherModel teacher = new TeacherModel();
-                await connection.OpenAsync();
-                SqlCommand command = new(spName, connection)
-                {
-                    CommandType = System.Data.CommandType.StoredProcedure
-                };
-                command.Parameters.AddWithValue("@Email", emailID);
+            (SqlCommand command, SqlConnection connection) = await DBConnection.CreateConnectionReturnCommand(spName);
+            TeacherModel teacher = new TeacherModel();
+    
+            command.Parameters.AddWithValue("@Email", emailID);
                 
-                using (SqlDataReader reader = await command.ExecuteReaderAsync())
+            using (SqlDataReader reader = await command.ExecuteReaderAsync())
+            {
+                while (reader.Read())
                 {
-                    while (reader.Read())
-                    {
-                        teacher.userName = reader["userName"].ToString();
-                        teacher.firstName = reader["FirstName"].ToString();
-                        teacher.lastName = reader["LastName"].ToString();
-                        teacher.userId = Convert.ToInt32(reader["userId"]);
-                        teacher.emailId = reader["emailID"].ToString();
-                        teacher.userType = (UserType)reader["userType"];
-                        teacher.password = reader["userPassword"].ToString();
-                        teacher.contact = reader["contact"].ToString();
-                    }
+                    teacher.userName = reader["userName"].ToString();
+                    teacher.firstName = reader["FirstName"].ToString();
+                    teacher.lastName = reader["LastName"].ToString();
+                    teacher.userId = Convert.ToInt32(reader["userId"]);
+                    teacher.emailId = reader["emailID"].ToString();
+                    teacher.userType = (UserType)reader["userType"];
+                    teacher.password = reader["userPassword"].ToString();
+                    teacher.contact = reader["contact"].ToString();
                 }
-                return teacher;
             }
+            await connection.CloseAsync();
+            return teacher;
         }
 
         private async Task<StudentModel> GetStudentDetails(string emailID, string spName)
         {
-            using (SqlConnection connection = new SqlConnection(connectionString))
-            {
-                StudentModel student = new StudentModel();
-                await connection.OpenAsync();
-                SqlCommand command = new(spName, connection)
-                {
-                    CommandType = System.Data.CommandType.StoredProcedure
-                };
-                command.Parameters.AddWithValue("@Email", emailID);
+            (SqlCommand command, SqlConnection connection) = await DBConnection.CreateConnectionReturnCommand(spName);
+            StudentModel student = new StudentModel();
+            
+            command.Parameters.AddWithValue("@Email", emailID);
                 
-                using (SqlDataReader reader = await command.ExecuteReaderAsync())
+            using (SqlDataReader reader = await command.ExecuteReaderAsync())
+            {
+                while (reader.Read())
                 {
-                    while (reader.Read())
-                    {
-                        student.userName = reader["userName"].ToString();
-                        student.firstName = reader["FirstName"].ToString();
-                        student.lastName = reader["LastName"].ToString();
-                        student.userId = Convert.ToInt32(reader["userId"]);
-                        student.emailId = reader["emailID"].ToString();
-                        student.userType = (UserType)reader["userType"];
-                        student.password = reader["password"].ToString();
-                        student.contact = reader["contact"].ToString();
-                        student.grade =  Convert.ToInt32(reader["grade"]);
-                    }
+                    student.userName = reader["userName"].ToString();
+                    student.firstName = reader["FirstName"].ToString();
+                    student.lastName = reader["LastName"].ToString();
+                    student.userId = Convert.ToInt32(reader["userId"]);
+                    student.emailId = reader["emailID"].ToString();
+                    student.userType = (UserType)reader["userType"];
+                    student.password = reader["password"].ToString();
+                    student.contact = reader["contact"].ToString();
+                    student.grade =  Convert.ToInt32(reader["grade"]);
                 }
-                return student;
             }
+            await connection.CloseAsync();
+            return student;
         }
 
 
