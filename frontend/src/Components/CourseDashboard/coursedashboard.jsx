@@ -33,12 +33,12 @@ const StudentDashboard = () => {
   const [selectedCourse, setSelectedCourse] = useState(null);
 
   const handleViewDetails = (courseIndex) => {
-    // Set the selected course when a tile is clicked
+    // Settingthe selected course when a tile is clicked
     setSelectedCourse(courses[courseIndex]);
   };
 
   const handleBackToList = () => {
-    // Clear the selected course when "Back to List" button is clicked
+    // Clearing the selected course when "Back to List" button is clicked
     setSelectedCourse(null);
   };
 
@@ -66,7 +66,7 @@ const StudentDashboard = () => {
         </Grid>
       ) : (
         <div>
-          <Button variant="outlined" color="primary" onClick={handleBackToList} style={{ marginBottom: '20px' }}>
+          <Button variant="outlined" color="primary" onClick={handleBackToList} style={{ marginBottom: '20px'}}>
             Back to List
           </Button>
           <Typography variant="h6" gutterBottom>
@@ -90,5 +90,4 @@ const StudentDashboard = () => {
     </div>
   );
 };
-
 export default StudentDashboard;
