@@ -6,6 +6,7 @@ import LoginSignup from './Components/LoginSIgnup/loginsignup';
 import AddStudentForm from './Components/AddStudent/AddStudent';
 import CreateCourseForm from './Components/CreateCourse/CreateCourseForm';
 import DisplayStudentProfile from './Components/DisplayStudentProfile/displaystudentprofile';
+import CourseDashboard from './Components/CourseDashboard/coursedashboard';
 import Login from './Components/Login/login';
 function App() {
   return (
@@ -17,6 +18,7 @@ function App() {
         <Route path="/AddStudent" element={<AddStudentForm/>} />
         <Route path="/CreateCourse" element={<CreateCourseForm/>} />
         <Route path="/DisplayStudentProfile" element={<DisplayStudentProfile/>} />
+        <Route path="/coursedashboard" element={<CourseDashboard/>} />
       </Routes>
     </Router>
   );
