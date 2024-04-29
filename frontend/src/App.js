@@ -9,6 +9,7 @@ import DisplayStudentProfile from './Components/DisplayStudentProfile/displaystu
 import CourseDashboard from './Components/courseDashboard/coursedashboard';
 import Login from './Components/Login/login';
 import AdminDashboard from './Components/AdminDashboard/admindashboard';
+import StudentDashboard from './Components/StudentDashboard/studentdashboard';
 function App() {
   return (
     <Router>
@@ -21,6 +22,7 @@ function App() {
         <Route path="/DisplayStudentProfile" element={<DisplayStudentProfile/>} />
         <Route path="/coursedashboard" element={<CourseDashboard/>} />
         <Route path="/admindashboard" element={<AdminDashboard/>} />
+        <Route path="/studentdashboard" element={<StudentDashboard/>} />
       </Routes>
     </Router>
   );
