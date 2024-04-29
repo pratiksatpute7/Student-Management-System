@@ -20,6 +20,16 @@ builder.Services.AddSession(options =>
     options.Cookie.IsEssential = true;
 });
 
+builder.Services.AddCors(options =>
+    {
+        options.AddPolicy("CorsPolicy", builder =>
+        {
+            builder.AllowAnyOrigin()
+                   .AllowAnyMethod()
+                   .AllowAnyHeader();
+        });
+    });
+
 // builder.Services.AddIdentity<ApplicationUser, IdentityRole>()
 //     .AddEntityFrameworkStores<ApplicationDbContext>()
 //     .AddDefaultTokenProviders();
@@ -59,5 +69,6 @@ if (app.Environment.IsDevelopment())
 app.UseSession();
 app.UseHttpsRedirection();
 app.MapControllers();
+app.UseCors("CorsPolicy");
 app.Run();
 

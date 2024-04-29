@@ -23,5 +23,6 @@ yarn-debug.log*
 yarn-error.log*
 /backend/bin
 /backend/obj
+/backend/obj
 /backend/obj/Debug
-/backend/obj/Debug/net8.0
+/backend/obj
