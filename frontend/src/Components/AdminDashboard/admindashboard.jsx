@@ -12,7 +12,8 @@ const AdminDashboard = () => {
       studentsEnrolled: 30
     },
     {
-      courseTitle: 'random desc',
+      courseTitle: 'course 2',
+      courseDescription:'random desc',
       credits: 4,
       maxCapacity: 40,
       studentsEnrolled: 20
