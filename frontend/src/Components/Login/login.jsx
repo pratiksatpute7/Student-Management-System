@@ -31,19 +31,21 @@ const Login = () => { //diff
   const handleLogin = async (e) => {//same
     e.preventDefault(); // Prevent default form submission behavior
     // Call the onLogin function passed as a prop, passing username and password
-    await fetch('http://localhost:5244/login/admin',{ //diff
+    await fetch('http://localhost:5244/login/student',{ //diff
         method: 'POST',
         headers: {
             Accept: 'application/json',
                     'Content-Type': 'application/json',
         },
         body: JSON.stringify(data)
-    }).then(response => {
-            console.log(response)
-        })
-        .catch(error =>{
-            console.log(error)
-        })
+    }).then(r=>r.json()).then(res=>{
+      if(res){
+        console.log(res);
+        localStorage.setItem('user', JSON.stringify(res));
+      }})
+      .catch(error =>{
+          console.log(error)
+      })
   };
 
   
