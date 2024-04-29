@@ -12,7 +12,7 @@ BEGIN
         emailID,
         contact,
         userType,
-        grade,
+        grade
     FROM 
         Students
     WHERE 

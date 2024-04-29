@@ -8,8 +8,46 @@ import Grid from '@mui/material/Grid';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
+import { useState } from 'react';
 
 export default function SignUp() {
+  const UserSignUpModel = {
+    firstName: '',
+    lastName: '',
+    userName: '',
+    emailId: '',
+    password: '',
+    contact: '',
+  };
+
+  const [data, setData] = useState(UserSignUpModel);
+
+  const handleInputChange = (e) => {//same
+    const { name, value } = e.target;
+    // Update the state with the new value while preserving other properties
+    setData({
+      ...data,
+      [name]: value
+    })};
+
+    const handleSignUp = async (e) => {//same
+      e.preventDefault(); // Prevent default form submission behavior
+      // Call the onLogin function passed as a prop, passing username and password
+      await fetch('http://localhost:5244/signup/admin',{ //diff
+          method: 'POST',
+          headers: {
+              Accept: 'application/json',
+                      'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(data)
+      }).then(response => {
+              console.log(response)
+          })
+          .catch(error =>{
+              console.log(error)
+          })
+    };
+
   return (
     <Container component="main" maxWidth="xs">
       <CssBaseline />
@@ -32,6 +70,7 @@ export default function SignUp() {
                 id="firstName"
                 label="First Name"
                 autoFocus
+                onChange={handleInputChange} 
               />
             </Grid>
             <Grid item xs={12} sm={6}>
@@ -43,6 +82,7 @@ export default function SignUp() {
                 label="Last Name"
                 name="lastName"
                 autoComplete="lname"
+                onChange={handleInputChange} 
               />
             </Grid>
             <Grid item xs={12}>
@@ -52,8 +92,9 @@ export default function SignUp() {
                 fullWidth
                 id="email"
                 label="Email Address"
-                name="email"
+                name="emailId"
                 autoComplete="email"
+                onChange={handleInputChange} 
               />
             </Grid>
             <Grid item xs={12}>
@@ -66,6 +107,7 @@ export default function SignUp() {
                 type="password"
                 id="password"
                 autoComplete="current-password"
+                onChange={handleInputChange} 
               />
             </Grid>
           </Grid>
@@ -75,6 +117,7 @@ export default function SignUp() {
             variant="contained"
             color="primary"
             style={{ marginTop: 3, marginBottom: 2 }}
+            onClick={handleSignUp}
           >
             Sign Up
           </Button>

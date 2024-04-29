@@ -9,8 +9,44 @@ import Box from '@mui/material/Box';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
+import { useState } from 'react';
 
-const Login = () => {
+const Login = () => { //diff
+  const userLoginModel = {
+    userName: '',
+    password: ''
+  };
+
+  const [data, setData] = useState(userLoginModel);//same
+
+  const handleInputChange = (e) => {//same
+    const { name, value } = e.target;
+    // Update the state with the new value while preserving other properties
+    setData({
+      ...data,
+      [name]: value
+    })};
+
+
+  const handleLogin = async (e) => {//same
+    e.preventDefault(); // Prevent default form submission behavior
+    // Call the onLogin function passed as a prop, passing username and password
+    await fetch('http://localhost:5244/login/admin',{ //diff
+        method: 'POST',
+        headers: {
+            Accept: 'application/json',
+                    'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(data)
+    }).then(response => {
+            console.log(response)
+        })
+        .catch(error =>{
+            console.log(error)
+        })
+  };
+
+  
   return (
     <Container component="main" maxWidth="xs">
       <CssBaseline />
@@ -29,9 +65,10 @@ const Login = () => {
             fullWidth
             id="email"
             label="Email Address"
-            name="email"
+            name="userName"
             autoComplete="email"
             autoFocus
+            onChange={handleInputChange} 
           />
           <TextField
             variant="outlined"
@@ -43,6 +80,7 @@ const Login = () => {
             type="password"
             id="password"
             autoComplete="current-password"
+            onChange={handleInputChange}
           />
           <Button
             type="submit"
@@ -50,6 +88,7 @@ const Login = () => {
             variant="contained"
             color="primary"
             style={{ marginTop: 3, marginBottom: 2 }}
+            onClick={handleLogin}
           >
             Log In
           </Button>

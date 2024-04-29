@@ -13,8 +13,6 @@ namespace backend.Helpers
     public class CourseHelper() : ICourseHelper
 
     {
-        private readonly string connectionString = DBConnection.getConnectionString;
-
         public async Task CreateCourse(CreateCouresModel course)
         {
             await InsertCourseInDatabase(course);
